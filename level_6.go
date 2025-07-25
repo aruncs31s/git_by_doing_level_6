@@ -1,47 +1,31 @@
 package main
 
 import (
-	"fmt"
-	"level_6/git"
-	"level_6/students"
+	"log"
+
+	"level_6/cmd"
+	"level_6/options"
 )
 
+/* NOTE: Flow
+- check which option using ./cmd/commandLine.go
+- play {}
+	- Check if they played the previous level
+		- it can be done by checking if their git config user.name is set ,
+		- if the *getUserName* returns something , check if its their actual name from the ./students/students_details.json file
+	- Then check if there is any update to the repo , if yes promt them to update,and restart the level(wait for it to fetch and continue)
+*/
+
 func main() {
-	// Check if any file has changed
-
-	modifiedFiles := git.GetModifiedFiles()
-	for _, file := range modifiedFiles {
-		if len(file) != 0 {
-			fmt.Printf("Modified: %v\n", file)
-
-		}
+	switch selectedOption := cmd.WhichCMD(); selectedOption {
+	case options.SelectError:
+		// TODO: Check if i can be more specific about the err
+		log.Fatal("Error")
+	case options.SelectDoPlay:
+		options.Play()
+	case options.SelectShowError:
+		options.ShowErrorDetails()
+	default:
+		log.Fatal("Error")
 	}
-
-	// Untracked files
-	UntrackedFiles := git.GetUntrackedFiles()
-	for _, file := range UntrackedFiles {
-		if len(file) != 0 {
-			fmt.Printf("Untracked: %v\n", file)
-
-		}
-	}
-	// remote.GetGithubCOmmits()
-	// Total Local Commits.
-	totalLocalCommit := git.GetNumCommitsLocal()
-	fmt.Print("Total Local Commits ")
-	fmt.Println(totalLocalCommit)
-	totalRemoteCommit := git.GetNumCommitsRemote()
-
-	fmt.Print("Total Remote Commits ")
-	fmt.Println(totalRemoteCommit)
-
-	// Read and display students
-	studentsList, err := students.ReadStudentsFromJSON()
-	if err != nil {
-		fmt.Printf("Error reading students: %v\n", err)
-	} else {
-		students.DisplayStudents(studentsList)
-	}
-	fmt.Println(git.GetUserName())
-	fmt.Println(git.GetUserEmail())
 }

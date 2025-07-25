@@ -1,3 +1,4 @@
+// Package students .. NOTE:to avoid linter error
 package students
 
 import (
@@ -6,7 +7,6 @@ import (
 	"os"
 )
 
-// Define struct to match your JSON structure
 type Student struct {
 	Name     string `json:"name"`
 	Username string `json:"username"`
@@ -15,17 +15,17 @@ type Students struct {
 	Students []Student `json:"students"`
 }
 
-func ReadStudentsFromJSON() ([]Student, error) {
+func ReadStudentsFromJSON(chParser chan []Student) {
 	data, err := os.ReadFile("students/students_details.json")
 	if err != nil {
-		return nil, fmt.Errorf("error reading file: %v", err)
+		fmt.Printf("error reading file: %v", err)
 	}
 
 	// Parse as map[string]string (username -> name)
 	var studentMap map[string]string
 	err = json.Unmarshal(data, &studentMap)
 	if err != nil {
-		return nil, fmt.Errorf("error parsing JSON: %v", err)
+		fmt.Printf("error parsing JSON: %v", err)
 	}
 
 	// Convert to []Student slice
@@ -37,7 +37,8 @@ func ReadStudentsFromJSON() ([]Student, error) {
 		})
 	}
 
-	return students, nil
+	chParser <- students
+	// return students, nil
 }
 
 func DisplayStudents(students []Student) {

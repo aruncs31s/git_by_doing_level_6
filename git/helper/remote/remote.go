@@ -33,8 +33,8 @@ type Commit struct {
 
 */
 
-func GetGithubCOmmits() int {
-
+// NOTE: This can be run in parrallel if they wait longer. or the selected option is play
+func GetGithubCommits() int {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "https://api.github.com/repos/aruncs31s/git_by_doing_level_6/commits", nil)
 	if err != nil {
