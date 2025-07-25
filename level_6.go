@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"level_6/git"
+	"level_6/students"
 )
 
 func main() {
@@ -33,4 +34,14 @@ func main() {
 
 	fmt.Print("Total Remote Commits ")
 	fmt.Println(totalRemoteCommit)
+
+	// Read and display students
+	studentsList, err := students.ReadStudentsFromJSON()
+	if err != nil {
+		fmt.Printf("Error reading students: %v\n", err)
+	} else {
+		students.DisplayStudents(studentsList)
+	}
+	fmt.Println(git.GetUserName())
+	fmt.Println(git.GetUserEmail())
 }
