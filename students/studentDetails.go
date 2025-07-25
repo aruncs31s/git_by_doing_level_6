@@ -20,7 +20,6 @@ func ReadStudentsFromJSON(chParser chan []Student) {
 	if err != nil {
 		fmt.Printf("error reading file: %v", err)
 	}
-
 	// Parse as map[string]string (username -> name)
 	var studentMap map[string]string
 	err = json.Unmarshal(data, &studentMap)

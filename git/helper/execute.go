@@ -1,3 +1,4 @@
+// Package helper // NOTE: To avoid linter warnings
 package helper
 
 import (
@@ -6,12 +7,12 @@ import (
 	"strings"
 )
 
-func Execute_Linux(theCMD string) []string {
+func ExecuteLinux(chStdOut chan []string, theCMD string) {
 	CMD := SplitCommands(theCMD) // []string
 	// Check if we have at least one element (the command name)
 	if len(CMD) == 0 {
 		fmt.Println("Error: empty command")
-		return []string{}
+		chStdOut <- []string{}
 	}
 	var output []byte
 	if len(CMD) == 1 {
@@ -21,5 +22,5 @@ func Execute_Linux(theCMD string) []string {
 		stdout := exec.Command(CMD[0], CMD[1:]...)
 		output, _ = stdout.Output()
 	}
-	return []string(strings.Split(string(output), "\n"))
+	chStdOut <- []string(strings.Split(string(output), "\n"))
 }

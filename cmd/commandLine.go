@@ -20,19 +20,19 @@ func WhichCMD() uint8 {
 	}
 	// For Linux
 	if os.Args[1] == "play" {
-		return options.DoPlay
+		return options.SelectDoPlay
 	}
 
 	if os.Args[1] == "show" {
 		if os.Args[2] == "help" {
-			return options.Help
+			return options.SelectHelp
 		} else if os.Args[2] == "error" {
-			return options.ShowError
+			return options.SelectShowError
 		} else {
 			log.Panic("   given ", os.Args[1])
 			log.Panic("   expects ", os.Args[1])
 			log.Fatal("   try show help")
 		}
 	}
-	return options.Error
+	return options.SelectError
 }

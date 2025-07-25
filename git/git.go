@@ -1,6 +1,7 @@
 package git
 
 import (
+	"log"
 	"strconv"
 	"strings"
 
@@ -14,30 +15,62 @@ import (
 // fmt.Println(len(GetNewFiles()))
 // }
 
-func GetModifiedFiles() []string {
-	return helper.Execute_Linux(commands.ModifiedFilesCMD)
+func GetModifiedFiles(ch chan []string) {
+	// TODO: Check if i can avoid this nesting
+	chNew := make(chan []string)
+	go helper.ExecuteLinux(chNew, commands.ModifiedFilesCMD)
+	ch <- <-chNew // ??
+	/*
+		value := <-chNew
+		ch <- value
+	*/
 }
 
-func GetUntrackedFiles() []string {
-	return helper.Execute_Linux(commands.UntrackedFilesCMD)
+func GetUntrackedFiles(ch chan []string) {
+	chNew := make(chan []string)
+	go helper.ExecuteLinux(chNew, commands.UntrackedFilesCMD)
+	ch <- <-chNew
 }
 
-func GetNumCommitsLocal() int {
-	_str := helper.Execute_Linux(commands.GetNumCommitsLocalCMD)
-	number, _ := strconv.Atoi(_str[0])
-	return number
+func GetNumCommitsLocal(ch chan int) {
+	chNew := make(chan []string)
+	go helper.ExecuteLinux(chNew, commands.GetNumCommitsLocalCMD)
+	// number, _ := strconv.Atoi(_str[0])
+	// return number
+	stdout := <-chNew
+	count, err := strconv.Atoi(stdout[0])
+	if err != nil {
+		log.Fatal("something bad happend")
+	}
+	ch <- count
 }
 
-func GetNumCommitsRemote() int {
-	return remote.GetGithubCOmmits()
+func GetNumCommitsRemote(ch chan int) {
+	ch <- remote.GetGithubCommits()
 }
 
 func GetUserName(chName chan string) {
-	nameSlice := helper.Execute_Linux(commands.GetUserNameCMD)
-	chName <- strings.Join(nameSlice, "")
+	ch := make(chan []string)
+	go helper.ExecuteLinux(ch, commands.GetUserNameCMD)
+	chName <- strings.Join(<-ch, "")
 }
 
-func GetUserEmail() string {
-	emailSlice := helper.Execute_Linux(commands.GetUserEmailCMD)
-	return strings.Join(emailSlice, "")
+func GetUserEmail(chEmail chan string) {
+	ch := make(chan []string)
+	go helper.ExecuteLinux(ch, commands.GetUserEmailCMD)
+	chEmail <- strings.Join(<-ch, "")
+}
+
+func CheckForUpdate(chIsUpdate chan bool) {
+	// TODO: Compare local and remote commits and return true/false
+	chLocal, chRemote := make(chan int), make(chan int)
+
+	go GetNumCommitsLocal(chLocal)
+	go GetNumCommitsRemote(chRemote)
+	if <-chLocal != <-chRemote {
+		// fmt.Println("Please Update this repo" )
+		chIsUpdate <- false
+		return
+	}
+	chIsUpdate <- true
 }
