@@ -24,4 +24,5 @@ func CheckNames(chChekName chan bool) {
 			continue
 		}
 	}
+	chChekName <- false
 }

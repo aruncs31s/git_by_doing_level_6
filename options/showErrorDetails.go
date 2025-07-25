@@ -1,5 +1,5 @@
 package options
 
-func ShowErrorDetails() {
+func ShowErrorDetails(err string) {
 	// TODO: Implement it
 }

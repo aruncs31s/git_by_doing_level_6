@@ -1,3 +1,4 @@
+// Package git ...NOTE: To avoid linter warnings
 package git
 
 import (

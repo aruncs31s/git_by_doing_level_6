@@ -24,7 +24,7 @@ func main() {
 	case options.SelectDoPlay:
 		options.Play()
 	case options.SelectShowError:
-		options.ShowErrorDetails()
+		options.ShowErrorDetails("test error")
 	default:
 		log.Fatal("Error")
 	}

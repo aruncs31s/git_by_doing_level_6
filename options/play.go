@@ -14,13 +14,12 @@ func Play() {
 	// NOTE: Check if their namess match
 	go helper.CheckNames(chCheckNames)
 	go git.CheckForUpdate(isSameNoOfCommits)
-	isSameName := <-chCheckNames
-	if !isSameName {
+
+	if !<-chCheckNames {
 		log.Fatal("Configure You git user.name first")
 	}
 	if !<-isSameNoOfCommits {
-		fmt.Println("Please update the repo")
-		return
+		log.Fatal("Please update the repo")
 	}
 	fmt.Println("You have succesfully Completed this level")
 }
