@@ -2,9 +2,10 @@
 package options
 
 const (
-	SelectError     = 0
-	SelectDoPlay    = 1
-	SelectIntro     = 2
-	SelectShowError = 3
-	SelectHelp      = 4
+	SelectError          = 0
+	SelectDoPlay         = 1
+	SelectIntro          = 2
+	SelectShowError      = 3
+	SelectHelp           = 4
+	SelectMarkAttentance = 5
 )
