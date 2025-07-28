@@ -77,10 +77,10 @@ func CheckForUpdate(chIsUpdate chan bool) {
 	chIsUpdate <- true
 }
 
-func checkForUpdate(ch_isUpdate chan bool) {
-	chLocal := make(chan []string)
-	go helper.ExecuteLinux(chLocal, commands.GetNumCommitsLocalCMD)
-}
+// func checkForUpdate(ch_isUpdate chan bool) {
+// 	chLocal := make(chan []string)
+// 	go helper.ExecuteLinux(chLocal, commands.GetNumCommitsLocalCMD)
+// }
 
 func CheckNames(chChekName chan bool) {
 	// Debug
