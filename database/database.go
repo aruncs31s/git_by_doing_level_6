@@ -93,15 +93,15 @@ func (a *App) Run() {
 		case "4":
 			a.studentHandler.DeleteStudent()
 		case "5":
-			fmt.Println("Goodbye!")
+			fmt.Println("Exit")
 			return
 		default:
-			fmt.Println("Invalid choice. Please try again.")
+			fmt.Println("Err")
 		}
 	}
 }
 
-func Database() {
+func Database(chApp chan *App) {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -111,5 +111,6 @@ func Database() {
 	db.AutoMigrate(&models.Students{})
 
 	app := NewApp(db)
-	app.Run()
+	fmt.Println("Sending Back the database")
+	chApp <- app
 }
