@@ -6,9 +6,4 @@ Inorder to do this level you must have finished the previous level , beacuse in 
 
 |Name| GitHub Username|Level 0| Level 1 | Level 2 | Level 3 | Level 4 | Level 5 | Level 6 |
 |----|----------------|--------|---------|---------|---------|---------|---------|---------|
-|Arun CS| [Arun CS](https://github.com/aruncs31s) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |✅ |
-|Arun CS| [Arun CS](https://github.com/aruncs31s) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |✅ |
-|Arun CS| [Arun CS](https://github.com/aruncs31s) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |✅ |
-|Arun CS| [Arun CS](https://github.com/aruncs31s) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |✅ |
-|Arun CS| [Arun CS](https://github.com/aruncs31s) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |✅ |
-|Arun CS| [Arun CS](https://github.com/aruncs31s) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |✅ |
+
