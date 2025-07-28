@@ -1,4 +1,4 @@
-package database
+package main
 
 // What i want to implement:
 // Students will enter their details in the console and i will save them to the database
@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"level_6/database/handlers"
 	"level_6/database/models"
@@ -113,4 +114,36 @@ func Database(chApp chan *App) {
 	app := NewApp(db)
 	fmt.Println("Sending Back the database")
 	chApp <- app
+}
+
+// func CreateNewStudentFromLocal() {
+// }
+
+//	 // In repository/studentRepository.go
+//
+//	2 func (r *StudentRepository) GetByUsername(username string) (*models.Students, error) {
+//	4     var student models.Students
+//	5     // Note we are using r.db to build the query
+//	6     err := r.db.Where("username = ?", username).First(&student).Error
+//	7     if err != nil {
+//	8         return nil, err
+//	9     }
+//
+// 10     return &student, nil
+// 11 }
+//
+//	func CheckIfUserAlreadyExist() {
+//		u := models.Students
+//
+//		// Get first matched record
+//		// user, err := u.WithContext(ctx).Where(u.Name.Eq("modi")).First()
+//		return true
+//	}
+func main() {
+	defer fmt.Println("Database Initialized")
+	chDatabase := make(chan *App)
+	go Database(chDatabase)
+	time.Sleep(5 * time.Second)
+	thisApp := <-chDatabase
+	thisApp.Run()
 }

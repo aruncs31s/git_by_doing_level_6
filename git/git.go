@@ -1,3 +1,7 @@
+// WARNING: UserName = "Arun CS"
+// Username = "aruncs31s" , there is a typo
+// TODO: Fix this latter.
+
 // Package git ...NOTE: To avoid linter warnings
 package git
 
@@ -9,6 +13,7 @@ import (
 	"level_6/git/helper"
 	"level_6/git/helper/commands"
 	"level_6/git/helper/remote"
+	"level_6/students"
 )
 
 // func GitMain() {
@@ -74,4 +79,49 @@ func CheckForUpdate(chIsUpdate chan bool) {
 		return
 	}
 	chIsUpdate <- true
+}
+
+func checkForUpdate(ch_isUpdate chan bool) {
+	chLocal := make(chan []string)
+	go helper.ExecuteLinux(chLocal, commands.GetNumCommitsLocalCMD)
+}
+
+func CheckNames(chChekName chan bool) {
+	// Debug
+	chJSONParsor, chGitUserName := make(chan []students.Student), make(chan string)
+	// TODO: Execute parsing json and geting user.name from git parallel
+	go students.ReadStudentsFromJSON(chJSONParsor)
+	go GetUserName(chGitUserName)
+	gitUserName := <-chGitUserName
+	// fmt.Println(gitUserName)
+	// fmt.Println(ch)
+	for _, student := range <-chJSONParsor {
+		if strings.Contains(student.Name, gitUserName) {
+			chChekName <- true
+			break
+		} else {
+			continue
+		}
+	}
+	chChekName <- false
+}
+
+// NOTE: GetUsernameid <- "aruncs31s"
+func GetUsernameid(chUsername chan string) {
+	chJSONParsor, chGitUserName := make(chan []students.Student), make(chan string)
+	// TODO: Execute parsing json and geting user.name from git parallel
+	go students.ReadStudentsFromJSON(chJSONParsor)
+	go GetUserName(chGitUserName)
+	gitUserName := <-chGitUserName
+	// fmt.Println(gitUserName)
+	// fmt.Println(ch)
+	for _, student := range <-chJSONParsor {
+		if strings.Contains(student.Name, gitUserName) {
+			chUsername <- student.Username
+			break
+		} else {
+			continue
+		}
+	}
+	chUsername <- ""
 }

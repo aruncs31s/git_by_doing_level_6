@@ -4,8 +4,15 @@ import (
 	"log"
 
 	"level_6/cmd"
+	"level_6/initializers"
 	"level_6/options"
 )
+
+func init() {
+	// load and share the database
+	// Check if the username Is already exist in the database
+	initializers.InitDatabase()
+}
 
 /* NOTE: Flow
 - check which option using ./cmd/commandLine.go

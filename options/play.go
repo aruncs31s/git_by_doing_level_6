@@ -1,32 +1,42 @@
 package options
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
-	"level_6/database"
 	"level_6/git"
-	helper "level_6/helper"
+	"level_6/initializers"
 )
 
-func Play() {
+// initialize performs pre-flight checks and sets up the application.
+func initialize() error {
 	chCheckNames, isSameNoOfCommits := make(chan bool), make(chan bool)
-	chDatabase := make(chan *database.App)
-	defer fmt.Println("You have succesfully Completed this level")
-	// NOTE: Check if their namess match
 
-	go helper.CheckNames(chCheckNames)
+	/*
+
+	 */
+	go git.CheckNames(chCheckNames)
 	go git.CheckForUpdate(isSameNoOfCommits)
-	go database.Database(chDatabase)
 
+	// Wait for checks to complete
 	if !<-chCheckNames {
-		log.Fatal("Configure You git user.name first")
+		return errors.New("Configure You git user.name first, check level 5")
 	}
 	if !<-isSameNoOfCommits {
-		log.Fatal("Please update the repo")
+		return errors.New("Please update the repo")
 	}
 
-	app := <-chDatabase
-	// fmt.Println("Inside play after calling database")
-	app.Run()
+	// app := <-chDatabase
+	return nil
+}
+
+func Play() {
+	err := initialize()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer fmt.Println("You have succesfully Completed this level")
+	initializers.App.Run()
 }
