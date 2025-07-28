@@ -64,7 +64,7 @@ func outro() {
 	chModifiedFiles := make(chan []string)
 	go git.GetModifiedFiles(chModifiedFiles)
 	modifiedFiles := <-chModifiedFiles
-	if len(modifiedFiles) != 0 {
+	if len(modifiedFiles) > 1 { // TODO: Check why when no files are modified it returns 1
 		fmt.Println("You still have some changes to commit and push")
 		return
 	}
