@@ -1,4 +1,4 @@
-package main
+package database
 
 // What i want to implement:
 // Students will enter their details in the console and i will save them to the database
@@ -19,18 +19,19 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 
 	"level_6/database/handlers"
 	"level_6/database/models"
 	"level_6/database/repository"
+	"level_6/git"
+	"level_6/markdown"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 type App struct {
-	studentHandler *handlers.StudentsHandler
+	StudentHandler *handlers.StudentsHandler
 }
 
 // This is a factory function ? That creates and returns a new instance of an App struct
@@ -55,29 +56,38 @@ func NewApp(db *gorm.DB) *App {
 		- This repository handles all data access for students (like queries, inserts, etc.)
 	*/
 
-	studentHandler := handlers.NewStudentsHandler(studentRepo)
+	StudentHandler := handlers.NewStudentsHandler(studentRepo)
 	/*
 			Calls another constructor function from the handlers package
 		- Passes `studentRepo` to it
 
 	*/
 	return &App{
-		studentHandler: studentHandler,
+		StudentHandler: StudentHandler,
 	}
 }
 
 func (a *App) getMenuChoice() string {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("\nChoose an operation:")
-	fmt.Println("1. Read (show all students)")
-	fmt.Println("2. Create (add new student)")
-	fmt.Println("3. Update (modify existing student)")
-	fmt.Println("4. Delete (remove student)")
+	fmt.Println("1. Check Attendance")
+	fmt.Println("2. Mark Attendance")
+	fmt.Println("3. Update the Attendance")
+	// fmt.Println("4. Delete (remove student)")
 	fmt.Println("5. Exit")
-	fmt.Print("Enter your choice (1-5): ")
+	fmt.Print("Enter your choice (1-3): ")
 
 	choice, _ := reader.ReadString('\n')
 	return strings.TrimSpace(choice)
+}
+
+func getNames() (string, string) {
+	chUsername, chName := make(chan string), make(chan string)
+	go git.GetUsernameid(chUsername)
+	go git.GetUserName(chName)
+
+	// Marking Attendance
+	return <-chUsername, <-chName
 }
 
 func (a *App) Run() {
@@ -86,14 +96,15 @@ func (a *App) Run() {
 
 		switch choice {
 		case "1":
-			a.studentHandler.GetAllStudents()
+			a.StudentHandler.GetAllStudents()
 		case "2":
-			a.studentHandler.CreateStudent()
+			markdown.MarkAttendance(getNames())
+		// case "3":
+		// 	git.PushToRemoteRepo
+		// 	// a.studentHandler.UpdateStudent()
+		// case "4":
+		// 	a.studentHandler.DeleteStudent()
 		case "3":
-			a.studentHandler.UpdateStudent()
-		case "4":
-			a.studentHandler.DeleteStudent()
-		case "5":
 			fmt.Println("Exit")
 			return
 		default:
@@ -116,72 +127,13 @@ func Database(chApp chan *App) {
 	chApp <- app
 }
 
-// func CreateNewStudentFromLocal() {
+// func main() {
+// 	// defer fmt.Println("Database Initialized")
+// 	chDatabase := make(chan *App)
+// 	go Database(chDatabase)
+// 	// time.Sleep(5 * time.Second)
+// 	thisApp := <-chDatabase
+// 	thisApp.StudentHandler.CreateLocalStudent()
+
+// 	thisApp.Run()
 // }
-
-//	 // In repository/studentRepository.go
-//
-//	2 func (r *StudentRepository) GetByUsername(username string) (*models.Students, error) {
-//	4     var student models.Students
-//	5     // Note we are using r.db to build the query
-//	6     err := r.db.Where("username = ?", username).First(&student).Error
-//	7     if err != nil {
-//	8         return nil, err
-//	9     }
-//
-// 10     return &student, nil
-// 11 }
-//
-//	func CheckIfUserAlreadyExist() {
-//		u := models.Students
-//
-//		// Get first matched record
-//		// user, err := u.WithContext(ctx).Where(u.Name.Eq("modi")).First()
-//		return true
-//	}
-
-func CheckIfUserAlreadyExist(h *handlers.StudentsHandler) {
-	// students, err := h.Repo.GetAll()
-	// fmt.Println(students)
-	// fmt.Println(err)
-	// var u models.Students
-	// Check issue issue@var_def_init obsidian
-	u := &models.Students{} 
-	defer fmt.Println("Checking if the user already exists")
-	user , _ := u.
-
-}
-
-// HACK:
-
-func CheckIfUserAlreadyExist(h *handlers.StudentsHandler) bool {
-    defer func() {
-        fmt.Println("Checking if the user already exists")
-    }()
-
-    // Assuming you have a method to get all users from the repository
-    students, err := h.Repo.GetAll()
-    if err != nil {
-        fmt.Printf("Error fetching students: %v\n", err)
-        return false
-    }
-
-    // Assuming you want to check if any student with the same ID exists
-    for _, s := range students {
-        if s.ID == u.ID { // Assuming 'u' is the user object you want to check
-            return true
-        }
-    }
-
-    return false
-}
-
-func main() {
-	defer fmt.Println("Database Initialized")
-	chDatabase := make(chan *App)
-	go Database(chDatabase)
-	time.Sleep(5 * time.Second)
-	thisApp := <-chDatabase
-	CheckIfUserAlreadyExist(&handlers.StudentsHandler{})
-	thisApp.Run()
-}

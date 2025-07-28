@@ -46,3 +46,12 @@ func (r *StudentRepository) Update(student *models.Students) error {
 func (r *StudentRepository) Delete(id uint) error {
 	return r.db.Delete(&models.Students{}, id).Error
 }
+
+func (r *StudentRepository) GetByUsername(username string) (*models.Students, error) {
+	var student models.Students
+	err := r.db.Where("username = ?", username).First(&student).Error
+	if err != nil {
+		return nil, err
+	}
+	return &student, nil
+}

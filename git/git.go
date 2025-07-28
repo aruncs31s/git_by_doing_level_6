@@ -125,3 +125,29 @@ func GetUsernameid(chUsername chan string) {
 	}
 	chUsername <- ""
 }
+
+// func PushToRemoteRepo() {
+// // func GetModifiedFiles(ch chan []string) {
+// 	// TODO: Check if i can avoid this nesting
+
+// 	chNew := make(chan []string)
+// 	go helper.ExecuteLinux(chNew, commands.ModifiedFilesCMD)
+// 	go helper.ExecuteLinux(chNew, commands.ModifiedFilesCMD)
+// 	go helper.ExecuteLinux(chNew, commands.ModifiedFilesCMD)
+// 	go helper.ExecuteLinux(chNew, commands.ModifiedFilesCMD)
+
+// 	// ch <- <-chNew // ??
+// 	/*
+// 		value := <-chNew
+// 		ch <- value
+// 	*/
+// // }
+
+// 	helper.ChainExecute(
+// 		commands.GitPullCMD,
+// 		commands.GitAddCMD,
+// 		commands.GitCommitCMD,
+// 		commands.GitPushCMD,
+// 	)
+
+// }
