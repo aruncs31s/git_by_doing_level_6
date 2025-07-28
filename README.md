@@ -2,6 +2,14 @@
 
 Task: Mark Your Attentance
 
+>[!IMPORTANT]
+> To run this task , you will need `go` installed in you system go [here](https://go.dev/doc/install) to install it. 
+> ***To Run the Code***
+> ```bash
+> go run ./level_6.go
+> ```
+> You have to do what the program says to complete the task , if you do it right your attendance will be marked the remote repository.
+
 Inorder to do this level you must have finished the previous level , beacuse in the previous level you have configured your git. If you have not properly configured your git , this may fail. And your "user.name" should match you actual name.
 
 ## How to update a repocitory. 
@@ -23,9 +31,17 @@ This will add all the changes you have made and upload it to the remote repo.
 
 ### *What if someone else has also made some changes?*
 If someone else has also made some changes , and you want that to be in your local repo too, then you can simply use the command `git pull origin main` which will update your local repo with the remote repo.
->[!NOTE
+>[!NOTE]
 > **Things to consider**
 > - If you have uncommited changes in your local repo , you should throw them away using `git stash` or commit them before pulling the changes.
+
+#### *How to check if you have uncommited changes?*
+![alt text](imgs/image.png)
+if you run `git status` you will see something like this and it will say "nothing to commit , working tree clean" which means you have not made any changes to any file. But if you did some changes its gonna' look something like this 
+
+![alt text](imgs/image2.png)
+You can see there are 2 files that are modified.
+
 
 ## Your Attendance
 
