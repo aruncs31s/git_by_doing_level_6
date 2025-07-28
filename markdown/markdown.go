@@ -36,7 +36,6 @@ func MarkAttendance(username, name string) {
 	fmt.Println(attendanceEntry)
 	updatedContent := contents + attendanceEntry
 	fmt.Println("Updated README Content:")
-	fmt.Println(updatedContent)
 	// Write that to the file
 	err = os.WriteFile("README.md", []byte(updatedContent), 0644)
 	if err != nil {

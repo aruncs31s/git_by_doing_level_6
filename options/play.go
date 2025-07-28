@@ -51,14 +51,28 @@ func outro() {
 	chCheckUpdate := make(chan bool)
 	go git.CheckForUpdate(chCheckUpdate)
 	fmt.Println("Now you want to push your attendance to the remote repository.")
+	fmt.Println("Please open another terminal and push this changes to the remote repo.")
+	fmt.Println("------------------------------------")
 	fmt.Println("Did you finish Pushing? (y/n)")
+
 	reader := bufio.NewReader(os.Stdin)
 	answer := qanda.ReadYesNoAnswer(reader)
 
-	if answer {
+	if !answer {
 		return
 	}
+	chModifiedFiles := make(chan []string)
+	go git.GetModifiedFiles(chModifiedFiles)
+	modifiedFiles := <-chModifiedFiles
+	if len(modifiedFiles) != 0 {
+		fmt.Println("You still have some changes to commit and push")
+		return
+	}
+
 	if !<-chCheckUpdate {
 		fmt.Println("Please update the repo first")
 	}
+	fmt.Println("You have successfully updated your attendance.")
+	fmt.Println("View Your attendance Here")
+	fmt.Println("https://github.com/aruncs31s/git_by_doing_level_6/")
 }

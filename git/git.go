@@ -26,10 +26,6 @@ func GetModifiedFiles(ch chan []string) {
 	chNew := make(chan []string)
 	go helper.ExecuteLinux(chNew, commands.ModifiedFilesCMD)
 	ch <- <-chNew // ??
-	/*
-		value := <-chNew
-		ch <- value
-	*/
 }
 
 func GetUntrackedFiles(ch chan []string) {

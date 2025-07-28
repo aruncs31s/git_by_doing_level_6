@@ -69,12 +69,12 @@ func NewApp(db *gorm.DB) *App {
 
 func (a *App) getMenuChoice() string {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("\nChoose an operation:")
+	fmt.Println("\nComplete this in order:")
 	fmt.Println("1. Check Attendance")
 	fmt.Println("2. Mark Attendance")
 	fmt.Println("3. Update the Attendance")
 	// fmt.Println("4. Delete (remove student)")
-	fmt.Println("5. Exit")
+	fmt.Println("4. Exit")
 	fmt.Print("Enter your choice (1-3): ")
 
 	choice, _ := reader.ReadString('\n')
@@ -105,7 +105,6 @@ func (a *App) Run() {
 		// case "4":
 		// 	a.studentHandler.DeleteStudent()
 		case "3":
-			fmt.Println("Exit")
 			return
 		default:
 			fmt.Println("Err")
@@ -123,7 +122,7 @@ func Database(chApp chan *App) {
 	db.AutoMigrate(&models.Students{})
 
 	app := NewApp(db)
-	fmt.Println("Sending Back the database")
+	// fmt.Println("Sending Back the database")
 	chApp <- app
 }
 
