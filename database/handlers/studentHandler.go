@@ -24,6 +24,7 @@ func NewStudentsHandler(repo repository.StudentsRepository) *StudentsHandler {
 
 func (h *StudentsHandler) CreateStudent() {
 	fmt.Println("\nEnter new student details:")
+	// getting the name, username from stdio
 	name, username := h.GetUserInput()
 
 	student := &models.Students{Name: name, Username: username}

@@ -139,11 +139,49 @@ func Database(chApp chan *App) {
 //		// user, err := u.WithContext(ctx).Where(u.Name.Eq("modi")).First()
 //		return true
 //	}
+
+func CheckIfUserAlreadyExist(h *handlers.StudentsHandler) {
+	// students, err := h.Repo.GetAll()
+	// fmt.Println(students)
+	// fmt.Println(err)
+	// var u models.Students
+	// Check issue issue@var_def_init obsidian
+	u := &models.Students{} 
+	defer fmt.Println("Checking if the user already exists")
+	user , _ := u.
+
+}
+
+// HACK:
+
+func CheckIfUserAlreadyExist(h *handlers.StudentsHandler) bool {
+    defer func() {
+        fmt.Println("Checking if the user already exists")
+    }()
+
+    // Assuming you have a method to get all users from the repository
+    students, err := h.Repo.GetAll()
+    if err != nil {
+        fmt.Printf("Error fetching students: %v\n", err)
+        return false
+    }
+
+    // Assuming you want to check if any student with the same ID exists
+    for _, s := range students {
+        if s.ID == u.ID { // Assuming 'u' is the user object you want to check
+            return true
+        }
+    }
+
+    return false
+}
+
 func main() {
 	defer fmt.Println("Database Initialized")
 	chDatabase := make(chan *App)
 	go Database(chDatabase)
 	time.Sleep(5 * time.Second)
 	thisApp := <-chDatabase
+	CheckIfUserAlreadyExist(&handlers.StudentsHandler{})
 	thisApp.Run()
 }
